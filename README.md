@@ -1,6 +1,22 @@
 ### terraform-aws-configuration
 
-This repo was created with the intention of helping create the initial setup of your AWS account with terraform.  The repo creates the state bucket, lock table, and budgets to ensure you're managing your monthly costs on your AWS account.
+This repo was created to help create the initial setup of your AWS account with Terraform.  The repo creates the state bucket, lock table, and budgets to ensure you manage your monthly costs on your AWS account.
+
+### Usage
+
+Run the `terraform init` and `terraform apply`.  Make sure to fill in the inputs for your AWS account number and primary email.
+Once the resources have been created, you can use the state management in other projects.  Add the *backend* block to your terraform block:
+```
+terraform {
+  backend "s3" {
+    bucket = "xxxxxxxxxxxx-terraform-state-bucket"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+    dynamodb_table = "xxxxxxxxxxxx-terraform-state-lock-table"
+  }
+}
+```
+When running the applies, observe that your terraform.tfstate file will now save in your S3 bucket!  Also, each time a terraform plan/apply occurs, the state will be locked through the DynamoDB table!
 
 ## Requirements
 
