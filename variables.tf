@@ -49,3 +49,13 @@ variable "additional_email_list" {
   description = "List of emails that need to be notiified for budgets"
   default     = []
 }
+
+variable "bucket_versioning" {
+  type        = string
+  description = "S3 Bucket Versioning status"
+  default     = "Enabled"
+  validation {
+    condition     = contains(["Enabled", "Disabled"], var.bucket_versioning)
+    error_message = "Bucket versioning must be either 'Enabled' or 'Disabled'."
+  }
+}

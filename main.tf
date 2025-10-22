@@ -23,6 +23,13 @@ resource "aws_s3_bucket" "terraform_state" {
   }
 }
 
+resource "aws_s3_bucket_versioning" "state_versioning" {
+  bucket = aws_s3_bucket.terraform_state.id
+  versioning_configuration {
+    status = var.bucket_versioning
+  }
+}
+
 resource "aws_dynamodb_table" "terraform_state_lock" {
   name           = "${var.account_number}-terraform-state-lock-table"
   read_capacity  = var.read_capacity
